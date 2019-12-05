@@ -13,18 +13,26 @@
 #ifndef FILLIT_H
 # define FILLIT_H
 
-#include "libft/libft.h"
-
-typedef struct	s_tetri	t_tetri;
+#include "../libft/libft.h"
 
 typedef struct	s_tetri
 {
 	int			**val;
-	int			x;
-	int			y;
+	int			col;
+	int			row;
 }				t_tetri;
+
+typedef struct	s_coords
+{
+	int			x0;
+	int			x1;
+	int			y0;
+	int			y1;
+}				t_coords;
 
 int				get_tetris(int fd, t_list **head);
 int				get_single_tetri(int fd, t_tetri *tetri);
+void			print_tetri(t_list *elem);
+t_list			*strip_tetri(t_list	*elem);
 
 #endif

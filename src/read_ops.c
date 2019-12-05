@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
+#include "../includes/fillit.h"
 
 static int	*to_bits(char *str)
 {
@@ -37,7 +37,7 @@ static int	*to_bits(char *str)
 	return (ptr);
 }
 
-int		get_single_tetri(int fd, t_tetri *tetri)
+int			get_single_tetri(int fd, t_tetri *tetri)
 {
 	int		count;
 	int 	ret;
@@ -47,8 +47,8 @@ int		get_single_tetri(int fd, t_tetri *tetri)
 	count = 0;
 	if (!(tetri->val = (int**)malloc(sizeof(int*) * 4)))
 		return (-1);
-	tetri->x = 4;
-	tetri->y = 4;
+	tetri->col = 4;
+	tetri->row = 4;
 	ans = tetri->val;
 	while ((ret = get_next_line(fd, &line)))
 	{

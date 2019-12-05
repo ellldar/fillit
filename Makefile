@@ -1,6 +1,6 @@
 NAME = fillit
-SRC = fillit.c helpers.c
-HDR = -I.
+SRC = src/fillit.c src/read_ops.c src/tetri_ops.c
+HDR = -I /includes
 LIB = -L./libft -lft
 FLG = -Wall -Werror -Wextra
 SANIT = -fsanitize=address
@@ -11,7 +11,7 @@ INPUT = sample.txt
 all: $(NAME)
 
 $(NAME): $(INPUT)
-	@gcc -o $(NAME) $(SRC) $(HDR) $(LIB)
+	@gcc -o $(NAME) $(SRC) $(HDR) $(LIB) $(FLG)
 	@./$(NAME) $(INPUT) | cat -e
 
 debug:
