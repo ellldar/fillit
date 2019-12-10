@@ -13,7 +13,7 @@
 #ifndef FILLIT_H
 # define FILLIT_H
 
-#include "../libft/libft.h"
+# include "../libft/libft.h"
 
 typedef struct	s_tetri
 {
