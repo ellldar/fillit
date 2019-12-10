@@ -32,6 +32,8 @@ int			main(int argc, char **argv)
 	int		ret;
 	int		fd;
 	t_list	*head;
+	size_t	size;
+	char 	**ans;
 
 	if (argc > 0)
 	{
@@ -40,6 +42,8 @@ int			main(int argc, char **argv)
 		if (ret == -1)
 			ft_putstr("error\n");
 		ft_lstmap(head, &strip_tetri);
+		size = find_ssq(head);
+		ans = solve_fillit(head, size);
 		ft_lstiter(head, &print_tetri);
 		ft_lstdel(&head, &rem_curr);
 		close(fd);
