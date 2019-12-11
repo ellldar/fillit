@@ -31,26 +31,34 @@ size_t		find_ssq(t_list *head)
 	return (i);
 }
 
-static char	**make_empty_square(size_t size)
+static int	**make_empty_square(size_t size)
 {
 	size_t 	i;
 	char 	**res;
 	char 	**ptr;
 
 	i = 0;
-	res = (char**)malloc(sizeof(char*) * (size + 1));
+	res = (char**)malloc(sizeof(int*) * size);
 	if (!res)
 		return (NULL);
 	ptr = res;
 	while (i++ < size)
 	{
-		*res = (char*)malloc(sizeof(char) * (size + 1));
-		ft_bzero(*res++, size + 1);
+		*res = (char*)malloc(sizeof(int) * size);
+		ft_bzero(*res++, size);
 	}
 	return (ptr);
 }
 
-int			try_pieces(char **arr, size_t size, t_list *head)
+static int	can_tetri_be_placed(int **arr, size_t size, t_tetri tetri, int a, int b)
+{
+	int i;
+	int j;
+
+
+}
+
+static int	try_pieces(int **arr, size_t size, t_list *head)
 {
 	int 	i;
 	int 	j;
@@ -65,7 +73,7 @@ int			try_pieces(char **arr, size_t size, t_list *head)
 		j = 0;
 		while (j < (int)size - tetri->row + 1)
 		{
-			if (curr->next && tetri_can_be_placed(arr, tetri, i, j))
+			if (curr->next && can_tetri_be_placed(arr, size, tetri, i, j))
 				try_pieces(add_tetri_to_square(arr, tetri, i, j), size, curr->next);
 			else
 				evaluate_square(add_tetri_to_square(arr, tetri, i, j));
@@ -75,8 +83,8 @@ int			try_pieces(char **arr, size_t size, t_list *head)
 
 char		**solve_fillit(t_list *head, size_t size)
 {
-	char 	**ans;
-	char 	**ptr;
+	int 	**ans;
+	int 	**ptr;
 	int 	ret;
 	int 	i;
 
