@@ -1,5 +1,5 @@
 NAME = fillit
-SRC = src/fillit.c src/read_ops.c src/tetri_ops.c src/solvers.c
+SRC = src/fillit.c src/read_ops.c src/tetri_ops.c src/solvers.c src/helpers.c
 HDR = -I /includes
 LIB = -L./libft -lft
 FLG = -Wall -Werror -Wextra

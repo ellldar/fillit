@@ -35,6 +35,8 @@ int				get_single_tetri(int fd, t_tetri *tetri);
 void			print_tetri(t_list *elem);
 t_list			*strip_tetri(t_list	*elem);
 size_t			find_ssq(t_list *head);
-char			**solve_fillit(t_list *head, size_t size);
+int				**make_square_new(size_t size);
+int				**make_square_copy(int **arr, size_t size);
+int				**solve_fillit(t_list *head, size_t size);
 
 #endif

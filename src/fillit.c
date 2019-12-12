@@ -33,7 +33,7 @@ int			main(int argc, char **argv)
 	int		fd;
 	t_list	*head;
 	size_t	size;
-	char 	**ans;
+	int 	**ans;
 
 	if (argc > 0)
 	{

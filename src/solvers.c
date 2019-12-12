@@ -12,58 +12,48 @@
 
 #include "../includes/fillit.h"
 
-size_t		find_ssq(t_list *head)
+static int	can_tetri_be_placed(int **arr, size_t size, t_tetri *tetri, int i, int j)
 {
-	t_list	*ptr;
-	int 	count;
-	int 	i;
-
-	i = 0;
-	count = 0;
-	ptr = head;
-	while (ptr)
+	while (i < tetri->col && i < (int)size)
 	{
-		count += 4;
-		ptr = ptr->next;
-	}
-	while (i * i < count)
+		while (j < tetri->row && j < (int)size)
+		{
+			if (arr[i][j] == 1)
+				return (0);
+			j++;
+		}
 		i++;
-	return (i);
-}
-
-static int	**make_empty_square(size_t size)
-{
-	size_t 	i;
-	char 	**res;
-	char 	**ptr;
-
-	i = 0;
-	res = (char**)malloc(sizeof(int*) * size);
-	if (!res)
-		return (NULL);
-	ptr = res;
-	while (i++ < size)
-	{
-		*res = (char*)malloc(sizeof(int) * size);
-		ft_bzero(*res++, size);
 	}
-	return (ptr);
+	return (i == tetri->col && j == tetri->row ? 1 : 0);
 }
 
-static int	can_tetri_be_placed(int **arr, size_t size, t_tetri tetri, int a, int b)
+static int	**add_tetri_to_square(int **arr, t_tetri *tetri, int i, int j)
 {
-	int i;
-	int j;
+//	int		**ans;
+	size_t	size;
+	int 	x;
 
-
+	// ans = make_square_copy(arr, size);
+	x = tetri->col + i + j;
+	size = sizeof(arr);
+	return (arr);
 }
 
-static int	try_pieces(int **arr, size_t size, t_list *head)
+static int	evaluate_square(int **arr)
+{
+	int **tmp;
+
+	tmp = arr;
+	return (1);
+}
+
+static int	run_iteration(int **arr, size_t size, t_list *head)
 {
 	int 	i;
 	int 	j;
 	t_list	*curr;
 	t_tetri	*tetri;
+	int 	res;
 
 	curr = head;
 	tetri = (t_tetri*)(curr->content);
@@ -74,32 +64,33 @@ static int	try_pieces(int **arr, size_t size, t_list *head)
 		while (j < (int)size - tetri->row + 1)
 		{
 			if (curr->next && can_tetri_be_placed(arr, size, tetri, i, j))
-				try_pieces(add_tetri_to_square(arr, tetri, i, j), size, curr->next);
-			else
-				evaluate_square(add_tetri_to_square(arr, tetri, i, j));
+				run_iteration(add_tetri_to_square(arr, tetri, i, j), size, curr->next);
+			else if ((res = evaluate_square(add_tetri_to_square(arr, tetri, i, j))))
+				return (1);
 		}
 	}
+	return (0);
 }
 
-char		**solve_fillit(t_list *head, size_t size)
+int			**solve_fillit(t_list *head, size_t size)
 {
 	int 	**ans;
 	int 	**ptr;
 	int 	ret;
 	int 	i;
 
-	ans = make_empty_square(size);
-	while (!(ret = try_pieces(ans, size, head)))
+	ans = make_square_new(size);
+	while (!(ret = run_iteration(ans, size, head)))
 	{
 		i = 0;
 		ptr = ans;
-		while (i++ < size)
+		while (i++ < (int)size)
 		{
 			free(*ptr);
 			ptr++;
 		}
 		free(ans);
-		ans = make_empty_square(size + 1);
+		ans = make_square_new(size + 1);
 	}
 	return (ans);
 }
