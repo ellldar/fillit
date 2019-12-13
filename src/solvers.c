@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/fillit.h"
+#include <stdio.h>
 
 static int	can_tetri_be_placed(int **arr, size_t size, t_tetri *tetri, int i, int j)
 {
@@ -90,7 +91,8 @@ int			**solve_fillit(t_list *head, size_t size)
 			ptr++;
 		}
 		free(ans);
-		ans = make_square_new(size + 1);
+		size++;
+		ans = make_square_new(size);
 	}
 	return (ans);
 }

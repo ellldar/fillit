@@ -41,8 +41,10 @@ int			main(int argc, char **argv)
 		ret = get_tetris(fd, &head);
 		if (ret == -1)
 			ft_putstr("error\n");
+		ft_lstiter(head, &print_tetri);
 		ft_lstmap(head, &strip_tetri);
 		size = find_ssq(head);
+		ft_lstiter(head, &print_tetri);
 		ans = solve_fillit(head, size);
 		ft_lstiter(head, &print_tetri);
 		ft_lstdel(&head, &rem_curr);
