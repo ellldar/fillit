@@ -41,12 +41,13 @@ int			main(int argc, char **argv)
 		ret = get_tetris(fd, &head);
 		if (ret == -1)
 			ft_putstr("error\n");
-		ft_lstiter(head, &print_tetri);
 		ft_lstmap(head, &strip_tetri);
+		ft_lstiter(head, &print_tetri);
 		size = find_ssq(head);
-		ft_lstiter(head, &print_tetri);
+		ft_putstr("smallest square: ");
+		ft_putstr(ft_itoa((int)size));
+		ft_putstr("\n");
 		ans = solve_fillit(head, size);
-		ft_lstiter(head, &print_tetri);
 		ft_lstdel(&head, &rem_curr);
 		close(fd);
 	}
