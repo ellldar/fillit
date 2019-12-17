@@ -50,23 +50,20 @@ int		**make_square_new(size_t size)
 	return (ptr);
 }
 
-int		**make_square_copy(int **arr, size_t size)
+int		eval_spot(int **arr, int i, int j, size_t size)
 {
-	size_t	i;
-	size_t	j;
-	int 	**ans;
+	int			ans;
+	int 		s;
+	static int	steps[] = {0, -1, -1, 0, 0, 1, 1, 0};
 
-	ans = make_square_new(size);
-	i = 0;
-	while (i < size)
+	s = 0;
+	ans = 0;
+	while (s < 8)
 	{
-		j = 0;
-		while (j < size)
-		{
-			ans[i][j] = arr[i][j];
-			j++;
-		}
-		i++;
+		if (i + steps[s] >= 0 && i + steps[s] <= (int)size &&
+			j + steps[s + 1] >= 0 && i + steps[s + 1] <= (int)size)
+			ans += arr[i + steps[s]][j + steps[s + 1]];
+		s += 2;
 	}
 	return (ans);
 }

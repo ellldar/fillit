@@ -57,25 +57,41 @@ static int	**remove_tetri(int **arr, t_tetri *tetri, int i, int j)
 	return (arr);
 }
 
-static int	evaluate_square(int **arr)
+static int	evaluate_square(int **arr, size_t size)
 {
-	int **tmp;
+	int		i;
+	int		j;
+	float	res;
 
-	tmp = arr;
-	return (1);
+	i = 0;
+	res = 0;
+	ft_putstr("Evalutating - ");
+	ft_putstr(ft_itoa((int)size));
+	ft_putstr("\n");
+	while (i < 0)
+	{
+		j = 0;
+		while (j < 0)
+		{
+			res += eval_spot(arr, i, j, size);
+			j++;
+		}
+		i++;
+	}
+	return (res/(int)size);
 }
 
-static int	put_tetri(int **arr, size_t size, t_list *head)
+static int	put_tetri(int **arr, size_t size, t_list *curr)
 {
 	int 	i;
 	int 	j;
-	t_list	*curr;
+	int 	**tmp;
 	t_tetri	*tetri;
-	int		res;
+	float	res;
 
-	curr = head;
 	tetri = (t_tetri*)(curr->content);
 	i = 0;
+	res = 0;
 	while (i < (int)size - tetri->col + 1)
 	{
 		j = 0;
@@ -83,12 +99,13 @@ static int	put_tetri(int **arr, size_t size, t_list *head)
 		{
 			if (!(curr->next))
 			{
-				if (evaluate_square(add_tetri(arr, tetri, i, j)) > res)
-					res = evaluate_square(add_tetri(arr, tetri, i, j));
+				tmp = add_tetri(arr, tetri, i, j);
+				if (evaluate_square(tmp, size) > res)
+					res = evaluate_square(add_tetri(arr, tetri, i, j), size);
 			}
 			else if (can_tetri_be_placed(arr, size, tetri, i, j))
 			{
-				put_tetri(add_tetri(arr, tetri, i, j), size, curr->next);
+				put_tetri(tmp, size, curr->next);
 				remove_tetri(arr, tetri, i, j);
 			}
 			j++;

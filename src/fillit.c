@@ -44,9 +44,6 @@ int			main(int argc, char **argv)
 		ft_lstmap(head, &strip_tetri);
 		ft_lstiter(head, &print_tetri);
 		size = find_ssq(head);
-		ft_putstr("smallest square: ");
-		ft_putstr(ft_itoa((int)size));
-		ft_putstr("\n");
 		ans = solve_fillit(head, size);
 		ft_lstdel(&head, &rem_curr);
 		close(fd);
