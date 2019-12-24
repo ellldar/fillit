@@ -15,53 +15,59 @@
 
 static int	can_tetri_be_placed(int **arr, size_t size, t_tetri *tetri, int i, int j)
 {
+	int i0;
 	int j0;
 
-	while (i < tetri->col && i < (int)size)
+	i0 = i;
+	while (i0 - i < tetri->col && i0 < (int)size)
 	{
 		j0 = j;
-		while (j0 < tetri->row && j0 < (int)size)
+		while (j0 - j < tetri->row && j0 < (int)size)
 		{
-			if (arr[i][j0] == 1)
+			if (arr[i0][j0] != 0)
 				return (0);
 			j0++;
 		}
-		i++;
+		i0++;
 	}
-	return (i == tetri->col ? 1 : 0);
+	return (i0 - i == tetri->col ? 1 : 0);
 }
 
-static int	**add_tetri(int **arr, t_tetri *tetri, int i, int j)
+static int	**add_tetri(int **arr, t_tetri *tetri, int i, int j, int nb)
 {
+	int i0;
 	int j0;
 
-	while (i < tetri->col)
+	i0 = i;
+	while (i0 - i < tetri->col)
 	{
 		j0 = j;
-		while (j0 < tetri->row)
+		while (j0 - j < tetri->row)
 		{
-			arr[i][j0] = tetri->val[i][j0];
+			arr[i0][j0] = tetri->val[i0 - i][j0 - j] ? nb : 0;
 			j0++;
 		}
-		i++;
+		i0++;
 	}
 	return (arr);
 }
 
 static int	**remove_tetri(int **arr, t_tetri *tetri, int i, int j)
 {
+	int i0;
 	int j0;
 
-	while (i < tetri->col)
+	i0 = i;
+	while (i0 - i < tetri->col)
 	{
 		j0 = j;
-		while (j0 < tetri->row)
+		while (j0 - j < tetri->row)
 		{
-			if (tetri->val[i][j0])
-				arr[i][j0] = 0;
+			if (tetri->val[i0 - i][j0 - j])
+				arr[i0][j0] = 0;
 			j0++;
 		}
-		i++;
+		i0++;
 	}
 	return (arr);
 }
@@ -75,10 +81,12 @@ static float	evaluate_square(int **arr, size_t size)
 
 	i = 0;
 	res = 0;
-	while (i < 0)
+	if (!arr)
+		return (0);
+	while (i < (int)size)
 	{
 		j = 0;
-		while (j < 0)
+		while (j < (int)size)
 		{
 			res += eval_spot(arr, i, j, size);
 			j++;
@@ -86,20 +94,17 @@ static float	evaluate_square(int **arr, size_t size)
 		i++;
 	}
 	ans = (float)res/(float)size;
-	printf("Eval res: %f\n", ans);
 	return (ans);
 }
 
-static int	put_tetri(int **arr, size_t size, t_list *curr)
+static int	put_tetri(int **arr, size_t size, t_list *curr, int ***ans, int nb)
 {
 	int 	i;
 	int 	j;
 	t_tetri	*tetri;
-	float	res;
 
 	tetri = (t_tetri*)(curr->content);
 	i = 0;
-	res = 0.0;
 	while (i < (int)size - tetri->col + 1)
 	{
 		j = 0;
@@ -107,45 +112,49 @@ static int	put_tetri(int **arr, size_t size, t_list *curr)
 		{
 			if (can_tetri_be_placed(arr, size, tetri, i, j))
 			{
-				add_tetri(arr, tetri, i, j);
-				print_square(arr, size);
-				delay(1000);
+				add_tetri(arr, tetri, i, j, nb);
 				if (curr->next)
+					put_tetri(arr, size, curr->next, ans, nb + 1);
+				else if (evaluate_square(arr, size) > evaluate_square(*ans, size))
 				{
-					put_tetri(arr, size, curr->next);
-					remove_tetri(arr, tetri, i, j);
+					if (!*ans)
+						*ans = make_square_new(size);
+					make_square_copy(*ans, arr, size);
 				}
-				else if (evaluate_square(arr, size) > res)
-					res = evaluate_square(arr, size);
+				remove_tetri(arr, tetri, i, j);
 			}
 			j++;
 		}
 		i++;
 	}
-	return (res > 0.0 ? 1 : 0);
+	return (*ans ? 1 : 0);
 }
 
-int			**solve_fillit(t_list *head, size_t size)
+int		**solve_fillit(t_list *head, size_t *size)
 {
-	int 	**ans;
-	int 	**ptr;
-	int 	ret;
-	int 	i;
+	int 		***ans;
+	int 		**arr;
+	int 		**ptr;
+	float 		ret;
+	int 		i;
 
-	ft_putstr("1. solve_fillit\n");
-	ans = make_square_new(size);
-	while (!(ret = put_tetri(ans, size, head)))
+	arr = make_square_new(*size);
+	ans = (int***)malloc(sizeof(int**));
+	while (!(ret = put_tetri(arr, *size, head, ans, 1)))
 	{
 		i = 0;
-		ptr = ans;
-		while (i++ < (int)size)
+		ptr = arr;
+		while (i++ < (int)(*size))
 		{
 			free(*ptr);
 			ptr++;
 		}
-		free(ans);
-		size++;
-		ans = make_square_new(size);
+		free(arr);
+		(*size)++;
+		ft_putstr("Size: ");
+		ft_putnbr((int)(*size));
+		ft_putstr("\n");
+		arr = make_square_new(*size);
 	}
-	return (ans);
+	return (*ans);
 }

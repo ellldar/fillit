@@ -31,9 +31,10 @@ int			main(int argc, char **argv)
 {
 	int		ret;
 	int		fd;
+	int 	**ans;
 	t_list	*head;
 	size_t	size;
-	int 	**ans;
+
 
 	if (argc > 0)
 	{
@@ -42,12 +43,12 @@ int			main(int argc, char **argv)
 		if (ret == -1)
 			ft_putstr("error\n");
 		ft_lstmap(head, &strip_tetri);
-		ft_lstiter(head, &print_tetri);
 		size = find_ssq(head);
-		ft_putstr("smallest square: ");
+		ft_putstr("Size: ");
 		ft_putnbr((int)size);
-		ft_putchar('\n');
-		ans = solve_fillit(head, size);
+		ft_putstr("\n");
+		ans = solve_fillit(head, &size);
+		print_square(ans, size);
 		ft_lstdel(&head, &rem_curr);
 		close(fd);
 	}

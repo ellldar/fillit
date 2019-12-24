@@ -34,6 +34,7 @@ size_t	find_ssq(t_list *head)
 int		**make_square_new(size_t size)
 {
 	size_t 	i;
+	size_t	j;
 	int 	**res;
 	int 	**ptr;
 
@@ -45,9 +46,30 @@ int		**make_square_new(size_t size)
 	while (i++ < size)
 	{
 		*res = (int*)malloc(sizeof(int) * size);
-		ft_bzero(*res++, size);
+		j = 0;
+		while (j++ < size)
+			(*res)[j - 1] = 0;
+		res++;
 	}
 	return (ptr);
+}
+
+void	make_square_copy(int **ans, int **arr, size_t size)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (i < size)
+	{
+		j = 0;
+		while (j < size)
+		{
+			ans[i][j] = arr[i][j];
+			j++;
+		}
+		i++;
+	}
 }
 
 int		eval_spot(int **arr, int i, int j, size_t size)
@@ -60,9 +82,9 @@ int		eval_spot(int **arr, int i, int j, size_t size)
 	ans = 0;
 	while (s < 8)
 	{
-		if (i + steps[s] >= 0 && i + steps[s] <= (int)size &&
-			j + steps[s + 1] >= 0 && i + steps[s + 1] <= (int)size)
-			ans += arr[i + steps[s]][j + steps[s + 1]];
+		if (i + steps[s] >= 0 && i + steps[s] < (int)size &&
+			j + steps[s + 1] >= 0 && j + steps[s + 1] < (int)size)
+			ans += arr[i + steps[s]][j + steps[s + 1]] ? 1 : 0;
 		s += 2;
 	}
 	return (ans);
