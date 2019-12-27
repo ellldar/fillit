@@ -57,24 +57,6 @@ int		**make_square_new(size_t size)
 	return (ptr);
 }
 
-void	make_square_copy(int **ans, int **arr, size_t size)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	while (i < size)
-	{
-		j = 0;
-		while (j < size)
-		{
-			ans[i][j] = arr[i][j];
-			j++;
-		}
-		i++;
-	}
-}
-
 int		is_empty_line(char *str)
 {
 	while (*str)
@@ -84,4 +66,24 @@ int		is_empty_line(char *str)
 		str++;
 	}
 	return (1);
+}
+
+void	print_square(int **sq, size_t size)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (i  < size)
+	{
+		j = 0;
+		while (j < size)
+		{
+			ft_putchar(sq[i][j] ? (sq[i][j] + 'A' - 1) : '.');
+			ft_putstr(j != size - 1 ? " " : "");
+			j++;
+		}
+		ft_putstr("\n");
+		i++;
+	}
 }

@@ -72,33 +72,7 @@ static int	**remove_tetri(int **arr, t_tetri *tetri, int i, int j)
 	return (arr);
 }
 
-static float	evaluate_square(int **arr, size_t size)
-{
-	size_t	i;
-	size_t	j;
-	float	res;
-	int 	count;
-
-	i = 0;
-	res = 0.0;
-	count = 1;
-	if (!arr)
-		return (1000);
-	while (i < size)
-	{
-		j = 0;
-		while (j < size)
-		{
-			if (arr[i][j] != count++)
-				res += (float)(i > j ? size - i : size - j)/(float)count;
-			j++;
-		}
-		i++;
-	}
-	return (res);
-}
-
-static int	put_tetri(int **arr, size_t size, t_list *curr, int ***ans, int nb)
+static int	put_tetri(int **arr, size_t size, t_list *curr, int nb)
 {
 	int 	i;
 	int 	j;
@@ -116,40 +90,29 @@ static int	put_tetri(int **arr, size_t size, t_list *curr, int ***ans, int nb)
 				add_tetri(arr, tetri, i, j, nb);
 				if (curr->next)
 				{
-					if (put_tetri(arr, size, curr->next, ans, nb + 1))
+					if(put_tetri(arr, size, curr->next, nb + 1))
 						return (1);
 				}
-				else if (evaluate_square(arr, size) < evaluate_square(*ans, size))
-				{
-					if (!*ans)
-						*ans = make_square_new(size);
-					make_square_copy(*ans, arr, size);
-					ft_putfloat(evaluate_square(*ans, size));
-					print_square(*ans, size);
-					ft_putchar('\n');
+				else
 					return (1);
-				}
 				remove_tetri(arr, tetri, i, j);
 			}
 			j++;
 		}
 		i++;
 	}
-	return (*ans ? 1 : 0);
+	return (0);
 }
 
 int		**solve_fillit(t_list *head, size_t *size)
 {
-	int 		***ans;
 	int 		**arr;
 	int 		**ptr;
 	float 		ret;
 	int 		i;
 
 	arr = make_square_new(*size);
-	ans = (int***)malloc(sizeof(int**));
-	*ans = NULL;
-	while (!(ret = put_tetri(arr, *size, head, ans, 1)))
+	while (!(ret = put_tetri(arr, *size, head, 1)))
 	{
 		i = 0;
 		ptr = arr;
@@ -162,5 +125,5 @@ int		**solve_fillit(t_list *head, size_t *size)
 		(*size)++;
 		arr = make_square_new(*size);
 	}
-	return (*ans);
+	return (arr);
 }

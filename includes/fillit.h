@@ -32,18 +32,14 @@ typedef struct	s_coords
 
 int				get_tetris(int fd, t_list **head);
 int				get_single_tetri(int fd, t_tetri *tetri);
-void			print_tetri(t_list *elem);
 t_list			*strip_tetri(t_list	*elem);
 size_t			*find_ssq(t_list *head);
 int				**make_square_new(size_t size);
-void			make_square_copy(int **ans, int **arr, size_t size);
 int				is_empty_line(char *str);
 int				**solve_fillit(t_list *head, size_t *size);
 
 // -----------		------ UTILS --------------------
 
 void			print_square(int **sq, size_t size);
-void			delay(int number_of_seconds);
-void			ft_putfloat(float nb);
 
 #endif
