@@ -12,12 +12,14 @@
 
 #include "../includes/fillit.h"
 
-size_t	find_ssq(t_list *head)
+size_t	*find_ssq(t_list *head)
 {
 	t_list	*ptr;
 	int 	count;
 	int 	i;
+	size_t	*ans;
 
+	ans = (size_t*)malloc(sizeof(size_t));
 	i = 0;
 	count = 0;
 	ptr = head;
@@ -28,7 +30,8 @@ size_t	find_ssq(t_list *head)
 	}
 	while (i * i < count)
 		i++;
-	return (i);
+	*ans = (size_t)i;
+	return (ans);
 }
 
 int		**make_square_new(size_t size)
@@ -72,20 +75,13 @@ void	make_square_copy(int **ans, int **arr, size_t size)
 	}
 }
 
-int		eval_spot(int **arr, int i, int j, size_t size)
+int		is_empty_line(char *str)
 {
-	int			ans;
-	int 		s;
-	static int	steps[] = {0, -1, -1, 0, 0, 1, 1, 0};
-
-	s = 0;
-	ans = 0;
-	while (s < 8)
+	while (*str)
 	{
-		if (i + steps[s] >= 0 && i + steps[s] < (int)size &&
-			j + steps[s + 1] >= 0 && j + steps[s + 1] < (int)size)
-			ans += arr[i + steps[s]][j + steps[s + 1]] ? 1 : 0;
-		s += 2;
+		if (*str != ' ' || *str != '\t')
+			return (0);
+		str++;
 	}
-	return (ans);
+	return (1);
 }

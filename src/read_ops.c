@@ -12,29 +12,74 @@
 
 #include "../includes/fillit.h"
 
-static int	*to_bits(char *str)
+static t_tetri	*make_tetri_new(void)
 {
-	int *res;
-	int *ptr;
-	int i;
+	t_tetri *res;
+	int		i;
+	int		j;
 
-	if (!(res = (int*)malloc(sizeof(int) * 4)))
+	if (!(res = (t_tetri*)malloc(sizeof(t_tetri))))
 		return (NULL);
-	ptr = res;
+	if (!(res->val = (int**)malloc(sizeof(int*) * 4)))
+		return (NULL);
 	i = 0;
 	while (i < 4)
 	{
-		if (*str == '#')
-			*res = 1;
-		else if (*str == '.')
-			*res = 0;
-		else
+		if (!(res->val[i] = (int*)malloc(sizeof(int) * 4)))
 			return (NULL);
-		str++;
-		res++;
+		j = 0;
+		while (j < 4)
+		{
+			res->val[i][j] = 0;
+			j++;
+		}
 		i++;
 	}
-	return (ptr);
+	res->col = 4;
+	res->row = 4;
+	return (res);
+}
+
+static t_tetri	*make_tetri_copy(t_tetri *tetri)
+{
+	t_tetri	*ans;
+	int i;
+	int j;
+
+	ans = make_tetri_new();
+	i = 0;
+	while (i < 4)
+	{
+		j = 0;
+		while (j < 4)
+		{
+			ans->val[i][j] = tetri->val[i][j];
+			j++;
+		}
+		i++;
+	}
+	return (ans);
+}
+
+static int	to_bits(char *str, int *res)
+{
+	int		i;
+	char 	*ptr;
+
+	i = 0;
+	ptr = str;
+	while (i < 4)
+	{
+		if (*ptr == '#')
+			res[i] = 1;
+		else if (*ptr == '.')
+			res[i] = 0;
+		else
+			return (0);
+		ptr++;
+		i++;
+	}
+	return (1);
 }
 
 int			get_single_tetri(int fd, t_tetri *tetri)
@@ -45,22 +90,19 @@ int			get_single_tetri(int fd, t_tetri *tetri)
 	char 	*line;
 
 	count = 0;
-	if (!(tetri->val = (int**)malloc(sizeof(int*) * 4)))
-		return (-1);
-	tetri->col = 4;
-	tetri->row = 4;
 	ans = tetri->val;
 	while ((ret = get_next_line(fd, &line)))
 	{
 		if (count < 4)
 		{
-			if (ft_strlen(line) != 4 || !(*ans = to_bits(line)))
+			if (ft_strlen(line) != 4 || !(to_bits(line, tetri->val[count])))
 				return (-1);
-			ans++;
 			count++;
 		}
-		else
+		else if (is_empty_line(line))
 			return (1);
+		else
+			return (-1);
 		free(line);
 	}
 	return (count == 4 ? 1 : 0);
@@ -70,20 +112,20 @@ int			get_tetris(int fd, t_list **head)
 {
 	int		ret;
 	t_list	*curr;
-	t_tetri	tetri;
+	t_tetri	*tetri;
 
-	if (!(*head = (t_list*)malloc(sizeof(t_tetri))))
-		return (-1);
-	while ((ret = get_single_tetri(fd, &tetri)) > 0)
+	*head = NULL;
+	tetri = make_tetri_new();
+	while ((ret = get_single_tetri(fd, tetri)) > 0)
 	{
-		if (!(*head)->content)
+		if (!(*head))
 		{
-			*head = ft_lstnew(&tetri, sizeof(t_tetri));
+			*head = ft_lstnew(make_tetri_copy(tetri), sizeof(t_tetri));
 			curr = *head;
 		}
 		else
 		{
-			curr->next = ft_lstnew(&tetri, sizeof(t_tetri));
+			curr->next = ft_lstnew(make_tetri_copy(tetri), sizeof(t_tetri));
 			curr = curr->next;
 		}
 	}

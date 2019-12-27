@@ -22,23 +22,30 @@ void 	delay(int number_of_seconds)
 		;
 }
 
+void 	ft_putfloat(float nb)
+{
+	ft_putnbr((int)nb);
+	ft_putchar('.');
+	ft_putnbr((int)(nb * 1000.0) % 1000);
+	ft_putchar('\n');
+}
+
 void	print_square(int **sq, size_t size)
 {
-	int i;
-	int j;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
-	while (i  < (int)size)
+	while (i  < size)
 	{
 		j = 0;
-		while (j < (int)size)
+		while (j < size)
 		{
-			ft_putnbr(sq[i][j]);
-			ft_putstr(" ");
+			ft_putchar(sq[i][j] ? (sq[i][j] + 'A' - 1) : '.');
+			ft_putstr(j != size - 1 ? " " : "");
 			j++;
 		}
 		ft_putstr("\n");
 		i++;
 	}
-	ft_putstr("\n");
 }

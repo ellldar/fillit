@@ -33,7 +33,7 @@ int			main(int argc, char **argv)
 	int		fd;
 	int 	**ans;
 	t_list	*head;
-	size_t	size;
+	size_t	*size;
 
 
 	if (argc > 0)
@@ -42,13 +42,13 @@ int			main(int argc, char **argv)
 		ret = get_tetris(fd, &head);
 		if (ret == -1)
 			ft_putstr("error\n");
-		ft_lstmap(head, &strip_tetri);
-		size = find_ssq(head);
-		ft_putstr("Size: ");
-		ft_putnbr((int)size);
-		ft_putstr("\n");
-		ans = solve_fillit(head, &size);
-		print_square(ans, size);
+		else
+		{
+			ft_lstmap(head, &strip_tetri);
+			size = find_ssq(head);
+			ans = solve_fillit(head, size);
+			print_square(ans, *size);
+		}
 		ft_lstdel(&head, &rem_curr);
 		close(fd);
 	}
