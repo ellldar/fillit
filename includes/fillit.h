@@ -38,8 +38,6 @@ int				**make_square_new(size_t size);
 int				is_empty_line(char *str);
 int				**solve_fillit(t_list *head, size_t *size);
 
-// -----------		------ UTILS --------------------
-
 void			print_square(int **sq, size_t size);
 
 #endif

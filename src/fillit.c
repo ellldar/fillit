@@ -15,7 +15,7 @@
 static void	rem_curr(void *curr, size_t size)
 {
 	t_tetri	*elem;
-	int 	i;
+	int		i;
 
 	i = 0;
 	elem = (t_tetri*)curr;
@@ -31,10 +31,9 @@ int			main(int argc, char **argv)
 {
 	int		ret;
 	int		fd;
-	int 	**ans;
+	int		**ans;
 	t_list	*head;
 	size_t	*size;
-
 
 	if (argc > 0)
 	{

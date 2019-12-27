@@ -15,8 +15,8 @@
 size_t	*find_ssq(t_list *head)
 {
 	t_list	*ptr;
-	int 	count;
-	int 	i;
+	int		count;
+	int		i;
 	size_t	*ans;
 
 	ans = (size_t*)malloc(sizeof(size_t));
@@ -36,10 +36,10 @@ size_t	*find_ssq(t_list *head)
 
 int		**make_square_new(size_t size)
 {
-	size_t 	i;
+	size_t	i;
 	size_t	j;
-	int 	**res;
-	int 	**ptr;
+	int		**res;
+	int		**ptr;
 
 	i = 0;
 	res = (int**)malloc(sizeof(int*) * size);
@@ -74,7 +74,7 @@ void	print_square(int **sq, size_t size)
 	size_t	j;
 
 	i = 0;
-	while (i  < size)
+	while (i < size)
 	{
 		j = 0;
 		while (j < size)

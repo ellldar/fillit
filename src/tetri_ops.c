@@ -18,12 +18,12 @@ static void	get_row_coords(int **arr, t_coords *coords)
 	int	i;
 	int	j;
 
-	i = 0;
+	i = -1;
 	match = 0;
-	while (i < 4)
+	while (++i < 4)
 	{
-		j = 0;
-		while (j < 4)
+		j = -1;
+		while (++j < 4)
 		{
 			if (arr[i][j])
 			{
@@ -34,14 +34,9 @@ static void	get_row_coords(int **arr, t_coords *coords)
 				}
 				break ;
 			}
-			j++;
 		}
 		if (match && j == 4)
-		{
-			(*coords).x1 = i - 1;
-			return ;
-		}
-		i++;
+			return ((void)((*coords).x1 = i - 1));
 	}
 }
 
@@ -51,12 +46,12 @@ static void	get_col_coords(int **arr, t_coords *coords)
 	int	i;
 	int	j;
 
-	j = 0;
+	j = -1;
 	match = 0;
-	while (j < 4)
+	while (++j < 4)
 	{
-		i = 0;
-		while (i < 4)
+		i = -1;
+		while (++i < 4)
 		{
 			if (arr[i][j])
 			{
@@ -67,56 +62,17 @@ static void	get_col_coords(int **arr, t_coords *coords)
 				}
 				break ;
 			}
-			i++;
 		}
 		if (match && i == 4)
-		{
-			(*coords).y1 = j - 1;
-			return ;
-		}
-		j++;
+			return ((void)((*coords).y1 = j - 1));
 	}
 }
 
-void		print_tetri(t_list *elem)
+static void	get_tetri_data(int **res, int **data, t_coords coords)
 {
-	int i;
-	int j;
-	int col;
-	int row;
-	int	**data;
+	int	i;
+	int	j;
 
-	i = 0;
-	data = (int**)((t_tetri*)(elem->content))->val;
-	col = (int)((t_tetri*)(elem->content))->col;
-	row = (int)((t_tetri*)(elem->content))->row;
-	while (i < col)
-	{
-		j = 0;
-		while (j < row)
-		{
-			ft_putstr(ft_itoa(data[i][j]));
-			ft_putchar(' ');
-			j++;
-		}
-		ft_putstr("\n");
-		i++;
-	}
-	ft_putchar('\n');
-}
-
-t_list		*strip_tetri(t_list	*elem)
-{
-	int 		i;
-	int			j;
-	int 		**data;
-	int 		**res;
-	t_coords	coords = {0, 3, 0, 3};
-
-	data = (int**)((t_tetri*)(elem->content))->val;
-	get_row_coords(data, &coords);
-	get_col_coords(data, &coords);
-	res = (int**)malloc(sizeof(int*) * (coords.x1 - coords.x0 + 1));
 	i = 0;
 	while (i < 4)
 	{
@@ -135,8 +91,25 @@ t_list		*strip_tetri(t_list	*elem)
 		i++;
 	}
 	free(data);
+}
+
+t_list		*strip_tetri(t_list *elem)
+{
+	int			**data;
+	int			**res;
+	t_coords	coords = {0, 3, 0, 3};
+
+	data = (int**)((t_tetri*)(elem->content))->val;
+	if (!data)
+		return (NULL);
+	get_row_coords(data, &coords);
+	get_col_coords(data, &coords);
+	res = (int**)malloc(sizeof(int*) * (coords.x1 - coords.x0 + 1));
+	if (!res)
+		return (NULL);
+	get_tetri_data(res, data, coords);
 	((t_tetri*)(elem->content))->val = res;
 	((t_tetri*)(elem->content))->col = coords.x1 - coords.x0 + 1;
 	((t_tetri*)(elem->content))->row = coords.y1 - coords.y0 + 1;
-	return(elem);
+	return (elem);
 }

@@ -43,8 +43,8 @@ static t_tetri	*make_tetri_new(void)
 static t_tetri	*make_tetri_copy(t_tetri *tetri)
 {
 	t_tetri	*ans;
-	int i;
-	int j;
+	int		i;
+	int		j;
 
 	ans = make_tetri_new();
 	i = 0;
@@ -61,10 +61,10 @@ static t_tetri	*make_tetri_copy(t_tetri *tetri)
 	return (ans);
 }
 
-static int	to_bits(char *str, int *res)
+static int		to_bits(char *str, int *res)
 {
 	int		i;
-	char 	*ptr;
+	char	*ptr;
 
 	i = 0;
 	ptr = str;
@@ -82,12 +82,12 @@ static int	to_bits(char *str, int *res)
 	return (1);
 }
 
-int			get_single_tetri(int fd, t_tetri *tetri)
+int				get_single_tetri(int fd, t_tetri *tetri)
 {
 	int		count;
-	int 	ret;
-	int 	**ans;
-	char 	*line;
+	int		ret;
+	int		**ans;
+	char	*line;
 
 	count = 0;
 	ans = tetri->val;
@@ -108,7 +108,7 @@ int			get_single_tetri(int fd, t_tetri *tetri)
 	return (count == 4 ? 1 : 0);
 }
 
-int			get_tetris(int fd, t_list **head)
+int				get_tetris(int fd, t_list **head)
 {
 	int		ret;
 	t_list	*curr;
