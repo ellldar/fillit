@@ -37,19 +37,23 @@ int			main(int argc, char **argv)
 
 	if (argc > 0)
 	{
-		fd = open(argv[1], O_RDONLY);
-		ret = get_tetris(fd, &head);
-		if (ret == -1)
+		if((fd = open(argv[1], O_RDONLY)) <= 0)
 			ft_putstr("error\n");
 		else
 		{
-			ft_lstmap(head, &strip_tetri);
-			size = find_ssq(head);
-			ans = solve_fillit(head, size);
-			print_square(ans, *size);
+			ret = get_tetris(fd, &head);
+			if (ret <= 0)
+				ft_putstr("error\n");
+			else
+			{
+				ft_lstmap(head, &strip_tetri);
+				size = find_ssq(head);
+				ans = solve_fillit(head, size);
+				print_square(ans, *size);
+			}
+			ft_lstdel(&head, &rem_curr);
+			close(fd);
 		}
-		ft_lstdel(&head, &rem_curr);
-		close(fd);
 	}
 	return (0);
 }

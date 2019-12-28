@@ -57,6 +57,35 @@ int		**make_square_new(size_t size)
 	return (ptr);
 }
 
+int		is_valid_tetri(t_tetri *tetri)
+{
+	int			count;
+	int			i;
+	int			j;
+	int			s;
+	static int	st[8] = {0, -1, -1, 0, 0, 1, 1, 0};
+
+	count = 0;
+	i = -1;
+	while (++i < tetri->col)
+	{
+		j = -1;
+		while (++j < tetri->row)
+		{
+			if (tetri->val[i][j])
+			{
+				count++;
+				s = -2;
+				while ((s += 2) < 8)
+					if (i + st[s] >= 0 && i + st[s] < tetri->col &&
+						j + st[s + 1] >= 0 && j + st[s + 1] < tetri->row)
+						count += tetri->val[i + st[s]][j + st[s + 1]];
+			}
+		}
+	}
+	return (count == 10 || count == 12);
+}
+
 int		is_empty_line(char *str)
 {
 	while (*str)
@@ -80,7 +109,6 @@ void	print_square(int **sq, size_t size)
 		while (j < size)
 		{
 			ft_putchar(sq[i][j] ? (sq[i][j] + 'A' - 1) : '.');
-			ft_putstr(j != size - 1 ? " " : "");
 			j++;
 		}
 		ft_putstr("\n");

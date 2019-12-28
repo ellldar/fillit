@@ -35,6 +35,7 @@ int				get_single_tetri(int fd, t_tetri *tetri);
 t_list			*strip_tetri(t_list	*elem);
 size_t			*find_ssq(t_list *head);
 int				**make_square_new(size_t size);
+int				is_valid_tetri(t_tetri *tetri);
 int				is_empty_line(char *str);
 int				**solve_fillit(t_list *head, size_t *size);
 

@@ -4,7 +4,7 @@ HDR = -I /includes
 LIB = -L./libft -lft
 FLG = -Wall -Werror -Wextra
 SANIT = -fsanitize=address
-INPUT = sample2.txt
+INPUT = tests/test1.txt
 
 .PHONY: all debug sanit clean fclean re
 
@@ -27,6 +27,7 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME)
+	@rm -rf $(NAME).dSYM/
 
 re: fclean all
 
