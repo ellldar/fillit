@@ -88,26 +88,26 @@ int				get_single_tetri(int fd, t_tetri *tetri)
 	int		ret;
 	int		**ans;
 	char	*line;
+	int		emp;
 
+	emp = 0;
 	count = 0;
 	ans = tetri->val;
 	while ((ret = get_next_line(fd, &line)))
 	{
-		if (count < 4)
+		if (!(is_empty_line(line)) && count < 4)
 		{
 			if (ft_strlen(line) != 4 || !(to_bits(line, tetri->val[count])))
 				return (-1);
+			count++;
 		}
 		else if (is_empty_line(line))
-			return (1);
-		else
-			return (-1);
+			emp++;
 		free(line);
-		count++;
+		if (count == 4)
+			return (1);
 	}
-	if (count > 0 && count < 4)
-		return (-1);
-	return (count == 4 ? 1 : 0);
+	return (emp ? -1 : 0);
 }
 
 int				get_tetris(int fd, t_list **head)
@@ -122,7 +122,7 @@ int				get_tetris(int fd, t_list **head)
 	{
 		if (!is_valid_tetri(tetri))
 			return (-1);
-		else if (!(*head))
+		if (!(*head))
 		{
 			*head = ft_lstnew(make_tetri_copy(tetri), sizeof(t_tetri));
 			curr = *head;

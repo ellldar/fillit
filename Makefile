@@ -4,7 +4,7 @@ HDR = -I /includes
 LIB = -L./libft -lft
 FLG = -Wall -Werror -Wextra
 SANIT = -fsanitize=address
-INPUT = tests/sample5.txt
+INPUT = tests/sample0.txt
 
 .PHONY: all debug sanit clean fclean re
 
