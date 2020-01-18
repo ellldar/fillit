@@ -23,4 +23,4 @@ fclean: clean
 re: fclean all
 
 norm:
-	@norminette src/*.c includes/*.h
+	@norminette project/*.c project/*.h

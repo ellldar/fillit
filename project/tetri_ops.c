@@ -98,8 +98,12 @@ t_list		*strip_tetri(t_list *elem)
 {
 	int			**data;
 	int			**res;
-	t_coords	coords = {0, 3, 0, 3};
+	t_coords	coords;
 
+	coords.x0 = 0;
+	coords.x1 = 3;
+	coords.y0 = 0;
+	coords.y1 = 3;
 	data = (int**)((t_tetri*)(elem->content))->val;
 	if (!data)
 		return (NULL);

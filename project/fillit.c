@@ -36,18 +36,14 @@ int			main(int argc, char **argv)
 
 	if (argc == 2)
 	{
-		if ((fd = open(argv[1], O_RDONLY)) <= 0)
+		if ((fd = open(argv[1], O_RDONLY)) <= 0 ||
+			(ret = get_tetris(fd, &head)) <= 0)
 			ft_putstr("error\n");
 		else
 		{
-			if ((ret = get_tetris(fd, &head)) <= 0)
-				ft_putstr("error\n");
-			else
-			{
-				ft_lstmap(head, &strip_tetri);
-				size = find_ssq(head);
-				print_square(solve_fillit(head, size), *size);
-			}
+			ft_lstmap(head, &strip_tetri);
+			size = find_ssq(head);
+			print_square(solve_fillit(head, size), *size);
 			ft_lstdel(&head, &rem_curr);
 			close(fd);
 		}

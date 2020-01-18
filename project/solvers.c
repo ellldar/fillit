@@ -13,38 +13,38 @@
 #include "fillit.h"
 
 static int	can_tetri_be_placed(int **arr, size_t size, t_tetri *tetri,
-		int i, int j)
+		t_pos pos)
 {
 	int i0;
 	int j0;
 
-	i0 = i;
-	while (i0 - i < tetri->col && i0 < (int)size)
+	i0 = pos.i;
+	while (i0 - pos.i < tetri->col && i0 < (int)size)
 	{
-		j0 = j;
-		while (j0 - j < tetri->row && j0 < (int)size)
+		j0 = pos.j;
+		while (j0 - pos.j < tetri->row && j0 < (int)size)
 		{
-			if (arr[i0][j0] != 0 && tetri->val[i0 - i][j0 - j] != 0)
+			if (arr[i0][j0] != 0 && tetri->val[i0 - pos.i][j0 - pos.j] != 0)
 				return (0);
 			j0++;
 		}
 		i0++;
 	}
-	return (i0 - i == tetri->col ? 1 : 0);
+	return (i0 - pos.i == tetri->col ? 1 : 0);
 }
 
-static int	**add_tetri(int **arr, t_tetri *tetri, int i, int j, int nb)
+static int	**add_tetri(int **arr, t_tetri *tetri, t_pos pos, int nb)
 {
 	int i0;
 	int j0;
 
-	i0 = i;
-	while (i0 - i < tetri->col)
+	i0 = pos.i;
+	while (i0 - pos.i < tetri->col)
 	{
-		j0 = j;
-		while (j0 - j < tetri->row)
+		j0 = pos.j;
+		while (j0 - pos.j < tetri->row)
 		{
-			if (tetri->val[i0 - i][j0 - j])
+			if (tetri->val[i0 - pos.i][j0 - pos.j])
 				arr[i0][j0] = nb;
 			j0++;
 		}
@@ -53,18 +53,18 @@ static int	**add_tetri(int **arr, t_tetri *tetri, int i, int j, int nb)
 	return (arr);
 }
 
-static int	**remove_tetri(int **arr, t_tetri *tetri, int i, int j)
+static int	**remove_tetri(int **arr, t_tetri *tetri, t_pos pos)
 {
 	int i0;
 	int j0;
 
-	i0 = i;
-	while (i0 - i < tetri->col)
+	i0 = pos.i;
+	while (i0 - pos.i < tetri->col)
 	{
-		j0 = j;
-		while (j0 - j < tetri->row)
+		j0 = pos.j;
+		while (j0 - pos.j < tetri->row)
 		{
-			if (tetri->val[i0 - i][j0 - j])
+			if (tetri->val[i0 - pos.i][j0 - pos.j])
 				arr[i0][j0] = 0;
 			j0++;
 		}
@@ -75,20 +75,19 @@ static int	**remove_tetri(int **arr, t_tetri *tetri, int i, int j)
 
 static int	put_tetri(int **arr, size_t size, t_list *curr, int nb)
 {
-	int		i;
-	int		j;
+	t_pos	pos;
 	t_tetri	*tetri;
 
 	tetri = (t_tetri*)(curr->content);
-	i = -1;
-	while (++i < (int)size - tetri->col + 1)
+	pos.i = -1;
+	while (++pos.i < (int)size - tetri->col + 1)
 	{
-		j = -1;
-		while (++j < (int)size - tetri->row + 1)
+		pos.j = -1;
+		while (++pos.j < (int)size - tetri->row + 1)
 		{
-			if (can_tetri_be_placed(arr, size, tetri, i, j))
+			if (can_tetri_be_placed(arr, size, tetri, pos))
 			{
-				add_tetri(arr, tetri, i, j, nb);
+				add_tetri(arr, tetri, pos, nb);
 				if (curr->next)
 				{
 					if (put_tetri(arr, size, curr->next, nb + 1))
@@ -96,7 +95,7 @@ static int	put_tetri(int **arr, size_t size, t_list *curr, int nb)
 				}
 				else
 					return (1);
-				remove_tetri(arr, tetri, i, j);
+				remove_tetri(arr, tetri, pos);
 			}
 		}
 	}

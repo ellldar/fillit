@@ -30,6 +30,12 @@ typedef struct	s_coords
 	int			y1;
 }				t_coords;
 
+typedef struct	s_pos
+{
+	int			i;
+	int			j;
+}				t_pos;
+
 int				get_tetris(int fd, t_list **head);
 int				get_single_tetri(int fd, t_tetri *tetri);
 t_list			*strip_tetri(t_list	*elem);
