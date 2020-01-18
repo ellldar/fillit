@@ -49,6 +49,6 @@ int			main(int argc, char **argv)
 		}
 	}
 	else
-		ft_putstr("usage: project [source_file]\n");
+		ft_putstr("usage: ./fillit [source_file]\n");
 	return (0);
 }
