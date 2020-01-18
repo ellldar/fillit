@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: esupatae <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/08 22:29:48 by esupatae          #+#    #+#             */
-/*   Updated: 2019/11/08 22:29:52 by esupatae         ###   ########.fr       */
+/*   Created: 2020/01/17 22:31:29 by esupatae          #+#    #+#             */
+/*   Updated: 2020/01/17 22:31:35 by esupatae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,6 @@ int			main(int argc, char **argv)
 		}
 	}
 	else
-		ft_putstr("usage: fillit [source_file]\n");
+		ft_putstr("usage: project [source_file]\n");
 	return (0);
 }

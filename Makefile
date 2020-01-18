@@ -1,25 +1,24 @@
 NAME = fillit
-SRC = fillit/fillit.c fillit/read_ops.c fillit/tetri_ops.c fillit/solvers.c fillit/helpers.c
-HDR = -I /fillit
+SRC = project/fillit.c project/read_ops.c project/tetri_ops.c project/solvers.c project/helpers.c
+HDR = -I /project
 LIB = libft
 LIBFLG = -L./$(LIB) -lft
 FLG = -Wall -Werror -Wextra
 
-.PHONY: all debug sanit clean fclean re libft
+.PHONY: all clean fclean re
 
 all: $(NAME)
 
 $(NAME): $(LIB)
-	make -C $(LIB) re
-	make -C $(LIB) clean
+	make -C $(LIB)
 	gcc -o $(NAME) $(SRC) $(HDR) $(LIBFLG) $(FLG)
 
 clean:
-	@rm -f *.o
+	make -C $(LIB) clean
 
 fclean: clean
-	@rm -f $(NAME)
-	@rm -rf $(NAME).dSYM/
+	make -C $(LIB) fclean
+	rm -f $(NAME)
 
 re: fclean all
 
