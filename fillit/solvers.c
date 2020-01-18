@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fillit.h"
+#include "fillit.h"
 
 static int	can_tetri_be_placed(int **arr, size_t size, t_tetri *tetri,
 		int i, int j)
@@ -80,11 +80,11 @@ static int	put_tetri(int **arr, size_t size, t_list *curr, int nb)
 	t_tetri	*tetri;
 
 	tetri = (t_tetri*)(curr->content);
-	i = 0;
-	while (i < (int)size - tetri->col + 1)
+	i = -1;
+	while (++i < (int)size - tetri->col + 1)
 	{
-		j = 0;
-		while (j < (int)size - tetri->row + 1)
+		j = -1;
+		while (++j < (int)size - tetri->row + 1)
 		{
 			if (can_tetri_be_placed(arr, size, tetri, i, j))
 			{
@@ -98,9 +98,7 @@ static int	put_tetri(int **arr, size_t size, t_list *curr, int nb)
 					return (1);
 				remove_tetri(arr, tetri, i, j);
 			}
-			j++;
 		}
-		i++;
 	}
 	return (0);
 }

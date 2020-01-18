@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fillit.h"
+#include "fillit.h"
 
 static void	get_row_coords(int **arr, t_coords *coords)
 {
@@ -79,7 +79,8 @@ static void	get_tetri_data(int **res, int **data, t_coords coords)
 		if (i >= coords.x0 && i <= coords.x1)
 		{
 			j = 0;
-			res[i - coords.x0] = (int*)malloc(sizeof(int) * (coords.y1 - coords.y0 + 1));
+			res[i - coords.x0] =
+					(int*)malloc(sizeof(int) * (coords.y1 - coords.y0 + 1));
 			while (j < 4)
 			{
 				if (j >= coords.y0 && j <= coords.y1)

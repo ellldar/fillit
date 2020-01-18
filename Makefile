@@ -1,26 +1,23 @@
 NAME = fillit
 SRC = src/fillit.c src/read_ops.c src/tetri_ops.c src/solvers.c src/helpers.c
 HDR = -I /includes
-LIB = -L./libft -lft
+LIB = libft
+LIBFLG = -L./$(LIB) -lft
 FLG = -Wall -Werror -Wextra
 SANIT = -fsanitize=address
-INPUT = tests/test1.txt
 
-.PHONY: all debug sanit clean fclean re
+.PHONY: all debug sanit clean fclean re libft
 
 all: $(NAME)
 
-$(NAME): $(INPUT)
-	@gcc -o $(NAME) $(SRC) $(HDR) $(LIB) $(FLG)
-	@./$(NAME) $(INPUT) | cat -e
+$(NAME): $(LIB)
+	@gcc -o $(NAME) $(SRC) $(HDR) $(LIBFLG) $(FLG)
 
-debug:
-	@gcc -o $(NAME) $(SRC) $(HDR) $(LIB) $(FLG) -g
-	@lldb $(NAME) -- $(INPUT)
-
-sanit:
-	@gcc -o $(NAME) $(SRC) $(HDR) $(LIB) $(FLG) $(SANIT) -g
-	@./$(NAME) $(INPUT) | cat -e
+$(LIB):
+	git submodule update --init
+	git submodule update --remote
+	make -C $(LIB) re
+	make -C $(LIB) clean
 
 clean:
 	@rm -f *.o

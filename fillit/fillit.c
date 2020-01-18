@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fillit.h"
+#include "fillit.h"
 
 static void	rem_curr(void *curr, size_t size)
 {
@@ -31,29 +31,28 @@ int			main(int argc, char **argv)
 {
 	int		ret;
 	int		fd;
-	int		**ans;
 	t_list	*head;
 	size_t	*size;
 
-	if (argc > 0)
+	if (argc == 2)
 	{
-		if((fd = open(argv[1], O_RDONLY)) <= 0)
+		if ((fd = open(argv[1], O_RDONLY)) <= 0)
 			ft_putstr("error\n");
 		else
 		{
-			ret = get_tetris(fd, &head);
-			if (ret <= 0)
+			if ((ret = get_tetris(fd, &head)) <= 0)
 				ft_putstr("error\n");
 			else
 			{
 				ft_lstmap(head, &strip_tetri);
 				size = find_ssq(head);
-				ans = solve_fillit(head, size);
-				print_square(ans, *size);
+				print_square(solve_fillit(head, size), *size);
 			}
 			ft_lstdel(&head, &rem_curr);
 			close(fd);
 		}
 	}
+	else
+		ft_putstr("usage: fillit [source_file]\n");
 	return (0);
 }
