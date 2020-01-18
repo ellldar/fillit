@@ -1,23 +1,18 @@
 NAME = fillit
-SRC = src/fillit.c src/read_ops.c src/tetri_ops.c src/solvers.c src/helpers.c
-HDR = -I /includes
+SRC = fillit/fillit.c fillit/read_ops.c fillit/tetri_ops.c fillit/solvers.c fillit/helpers.c
+HDR = -I /fillit
 LIB = libft
 LIBFLG = -L./$(LIB) -lft
 FLG = -Wall -Werror -Wextra
-SANIT = -fsanitize=address
 
 .PHONY: all debug sanit clean fclean re libft
 
 all: $(NAME)
 
 $(NAME): $(LIB)
-	@gcc -o $(NAME) $(SRC) $(HDR) $(LIBFLG) $(FLG)
-
-$(LIB):
-	git submodule update --init
-	git submodule update --remote
 	make -C $(LIB) re
 	make -C $(LIB) clean
+	gcc -o $(NAME) $(SRC) $(HDR) $(LIBFLG) $(FLG)
 
 clean:
 	@rm -f *.o
