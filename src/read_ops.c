@@ -84,30 +84,31 @@ static int		to_bits(char *str, int *res)
 
 int				get_single_tetri(int fd, t_tetri *tetri)
 {
-	int		count;
-	int		ret;
-	int		**ans;
-	char	*line;
-	int		emp;
+	int			count;
+	int			ret;
+	char		*line;
+	static int	emp = -1;
 
-	emp = 0;
 	count = 0;
-	ans = tetri->val;
-	while ((ret = get_next_line(fd, &line)))
+	while ((count + ft_abs(emp)) < 5 && (ret = get_next_line(fd, &line)))
 	{
-		if (!(is_empty_line(line)) && count < 4)
+		if (is_empty_line(line) && emp >= 0)
+		{
+			if (count)
+				return (-1);
+			emp++;
+		}
+		else
 		{
 			if (ft_strlen(line) != 4 || !(to_bits(line, tetri->val[count])))
 				return (-1);
 			count++;
 		}
-		else if (is_empty_line(line))
-			emp++;
 		free(line);
-		if (count == 4)
-			return (1);
 	}
-	return (emp ? -1 : 0);
+	if (!ret && !count && !emp)
+		return (0);
+	return (count == 4 && (emp == -1 || emp == 1) ? !(emp = 0) : -1);
 }
 
 int				get_tetris(int fd, t_list **head)
